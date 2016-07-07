@@ -34,17 +34,26 @@ public class Word
 {
 	public String form;
 	public String pos;
+	public String entity;
 
 	public Word(String form, String pos)
 	{
 		this.form = form;
 		this.pos = pos;
+		this.entity = "null entity";
+	}
+	
+	public Word(String form, String pos, String entity)
+	{
+		this.form = form;
+		this.pos = pos;
+		this.entity = entity;
 	}
 
 	@Override
 	public String toString()
 	{
-		return form + "/" + (pos != null ? pos : "--");
+		return form + "/" + (pos != null ? pos : "--") + (entity != null ? entity : "--");
 	}
 
 	@Override
@@ -52,7 +61,7 @@ public class Word
 	{
 		if (obj == null || !(obj instanceof Word)) return false;
 		Word w = (Word)obj;
-		if (!w.form.equals(form) || !w.pos.equals(pos)) return false;
+		if (!w.form.equals(form) || !w.pos.equals(pos) || !w.entity.equals(entity)) return false;
 		return true;
 	}
 
