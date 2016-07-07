@@ -246,16 +246,9 @@ public class Statics
 
 	public static int getCharType(char c)
 	{
-		if (c >= '0' && c <= '9' || c >= '０' && c <= '９' ||
-				c == '一' || c == '二' || c == '三' || c == '四' || c == '五' ||
-				c == '六' || c == '七' || c == '八' || c == '九' || c == '十' ||
-				c == '百' || c == '千' || c == '万' || c == '亿' ||
-				c == '〇' || c == '零')
+		if (c >= '0' && c <= '9' )
 			return 1; // digit
-		else if (c == '年' || c == '月' || c == '日' || c == '时' || c == '分' || c == '秒')
-			return 2; // date/time
-		else if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' ||
-				c >= 'ａ' && c <= 'ｚ' || c >= 'Ａ' && c <= 'Ｚ')
+		else if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z')
 			return 3; // alphabet
 		else if (c >= 0x0020 && c < 0x0030 ||
 				c >= 0x003a && c < 0x0041 ||
