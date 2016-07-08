@@ -39,7 +39,6 @@ import corbit.commons.io.Console;
 import corbit.commons.util.GlobalConf;
 import corbit.tagdep.dict.MaltTagDictionary;
 import corbit.tagdep.dict.TagDictionary;
-import corbit.tagdep.io.CTBReader;
 import corbit.tagdep.io.MaltReader;
 import corbit.tagdep.io.ParseReader;
 
@@ -399,11 +398,11 @@ class Program
 			if (lArgs.size() < 3) usage();
 			ParseReader.maltToDep(lArgs.get(1), lArgs.get(2));
 		}
-		else if (lArgs.get(0).equals("CtbToPlain"))
-		{
-			if (lArgs.size() < 3) usage();
-			ParseReader.ctbToPlain(lArgs.get(1), lArgs.get(2));
-		}
+//		else if (lArgs.get(0).equals("CtbToPlain"))
+//		{
+//			if (lArgs.size() < 3) usage();
+//			//ParseReader.ctbToPlain(lArgs.get(1), lArgs.get(2));
+//		}
 		else if (lArgs.get(0).equals("EvalPos"))
 		{
 			if (lArgs.size() < 3) usage();

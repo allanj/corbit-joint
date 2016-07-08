@@ -60,7 +60,6 @@ import corbit.commons.util.Pair;
 import corbit.commons.util.Statics;
 import corbit.commons.util.StepCounter;
 import corbit.commons.util.Stopwatch;
-import corbit.tagdep.dict.CTBTagDictionary;
 import corbit.tagdep.dict.MaltTagDictionary;
 import corbit.tagdep.dict.TagDictionary;
 import corbit.tagdep.handler.SRParserCtbHandlerHS10;
@@ -68,7 +67,6 @@ import corbit.tagdep.handler.SRParserCtbHandlerZC08;
 import corbit.tagdep.handler.SRParserCtbHandlerZN11;
 import corbit.tagdep.handler.SRParserHandler;
 import corbit.tagdep.io.MaltReader;
-import corbit.tagdep.io.CTBReader;
 import corbit.tagdep.io.ParseReader;
 import corbit.tagdep.io.ParseWriter;
 import corbit.tagdep.transition.SRParserTransition;
@@ -102,7 +100,8 @@ public class SRParser extends SRParserParameters
 
 	public void setUseClosedTags(boolean b)
 	{
-		m_dict = new CTBTagDictionary(b);
+		throw new RuntimeException("CTB Tag Dictionary is already disabled");
+		//m_dict = new CTBTagDictionary(b);
 	}
 	
 	public void setFeatureHandler(int iType)
@@ -150,7 +149,10 @@ public class SRParser extends SRParserParameters
 
 	double iterateOnce(String sFile, String sRefFile, boolean bTrain, String sParseFile) throws IOException
 	{
-		ParseReader ct = m_iInputFormat == 0 ? new MaltReader(sFile) : new CTBReader(sFile);
+		ParseReader ct = m_iInputFormat == 0 ? new MaltReader(sFile) : null;
+		if(ct==null){
+			throw new RuntimeException("The CTB Tag dictionary is already disabled");
+		}
 		List<DepTreeSentence> lt = new ArrayList<DepTreeSentence>();
 		for (DepTreeSentence p : ct)
 			if (p != null) lt.add(p);
@@ -160,7 +162,7 @@ public class SRParser extends SRParserParameters
 		if (sRefFile != null)
 		{
 			lr = new ArrayList<DepTreeSentence>();
-			ParseReader cr = m_iInputFormat == 0 ? new MaltReader(sFile) : new CTBReader(sRefFile);
+			ParseReader cr = m_iInputFormat == 0 ? new MaltReader(sFile) : null;
 			for (DepTreeSentence p : cr)
 				if (p != null) lr.add(p);
 			cr.shutdown();
@@ -220,6 +222,7 @@ public class SRParser extends SRParserParameters
 			while (true)
 			{
 				// proceed a shift-reduce step of gold derivation
+				System.err.println("train:"+bTrain+", show stats:"+m_bShowStats);
 				if (bTrain || m_bShowStats)
 					sg = trans.moveNextGold(sg, gsent, false).second;
 
@@ -286,7 +289,7 @@ public class SRParser extends SRParserParameters
 				 */
 
 				lOuts.clear();
-
+				
 				for (int iSent = iPhase * iParallel; iSent < (iPhase + 1) * iParallel && iSent < gsents.size(); ++iSent)
 				{
 					final DepTreeSentence gsent = gsents.get(iSent);
@@ -299,7 +302,7 @@ public class SRParser extends SRParserParameters
 						}
 					}));
 				}
-
+				System.err.println("[Info (allan)]Finish parsing sentence...");
 				/*
 				 * sequentially process results of a thread group
 				 */
@@ -340,7 +343,7 @@ public class SRParser extends SRParserParameters
 					dTotalScore += so.scprf;
 					cnt.increment();
 				}
-
+				System.err.println("[Info (allan)]Finish retrieving results...");
 				// perceptron update
 				if (bTrain)
 				{

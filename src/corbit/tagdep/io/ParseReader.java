@@ -61,6 +61,8 @@ public abstract class ParseReader extends Generator<DepTreeSentence>
 		}
 	}
 
+	/***
+	 * CTB reader and dictionary are already disabled
 	public static void ctbToPlain(String sFile, String sOutFile) throws IOException
 	{
 		PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(sOutFile), "UTF-8"));
@@ -81,7 +83,7 @@ public abstract class ParseReader extends Generator<DepTreeSentence>
 		}
 		pw.close();
 	}
-
+	**/
 	public static void maltToDep(String sFile, String sOutFile) throws IOException
 	{
 		PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(sOutFile), "UTF-8"));

@@ -33,7 +33,6 @@ package corbit.commons.transition;
 import java.util.HashMap;
 import java.util.Map;
 
-import corbit.tagdep.dict.CTBTagDictionary;
 import corbit.tagdep.dict.MaltTagDictionary;
 
 public class PDAction

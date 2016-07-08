@@ -127,13 +127,11 @@ public class SRParserTransitionStd extends SRParserTransition
 				else if (ws1.index != -1 && ws0.index == gsent.get(ws1.index).head)
 					return PDAction.REDUCE_LEFT;
 			}
-
 			if (s.curidx == s.sent.size())
 			{
 				Console.writeLine("No gold action found: " + s);
 				return PDAction.NOT_AVAILABLE;
 			}
-
 			if (m_bAssignPosFollowsShift)
 				return PDAction.getShiftPosAction(gsent.get(s.curidx).pos);
 			else
