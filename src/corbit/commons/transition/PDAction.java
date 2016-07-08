@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import corbit.tagdep.dict.CTBTagDictionary;
+import corbit.tagdep.dict.MaltTagDictionary;
 
 public class PDAction
 {
@@ -51,11 +52,11 @@ public class PDAction
 	static Map<String,PDAction> m_sPosActions;
 	static final int m_numPos;
 	static final String[] m_posSet;
-	static final CTBTagDictionary m_dict;
+	static final MaltTagDictionary m_dict;
 
 	static
 	{
-		m_dict = new CTBTagDictionary(true); // it doesn't matter even if closed tags are disabled.
+		m_dict = new MaltTagDictionary(); // it doesn't matter even if closed tags are disabled.
 		m_posActions = new HashMap<String,PDAction>();
 		m_sPosActions = new HashMap<String,PDAction>();
 		for (String sPos: m_dict.getTagList())
