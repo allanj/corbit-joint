@@ -60,8 +60,8 @@ public class PDAction
 		m_sPosActions = new HashMap<String,PDAction>();
 		for (String sPos: m_dict.getTagList())
 		{
-			m_posActions.put(sPos, new PDAction("R-" + sPos));
-			m_sPosActions.put(sPos, new PDAction("RS-" + sPos));
+			m_posActions.put(sPos, new PDAction("R--" + sPos));
+			m_sPosActions.put(sPos, new PDAction("RS--" + sPos));
 		}
 		m_numPos = m_dict.getTagCount();
 		m_posSet = m_dict.getTagList();
@@ -70,7 +70,7 @@ public class PDAction
 	private PDAction(String s)
 	{
 		m_action = s;
-		String[] p = m_action.split("-");
+		String[] p = m_action.split("--");
 		m_pos = p.length > 1 ? p[1] : null;
 	}
 

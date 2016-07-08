@@ -222,7 +222,6 @@ public class SRParser extends SRParserParameters
 			while (true)
 			{
 				// proceed a shift-reduce step of gold derivation
-				System.err.println("train:"+bTrain+", show stats:"+m_bShowStats);
 				if (bTrain || m_bShowStats)
 					sg = trans.moveNextGold(sg, gsent, false).second;
 
@@ -302,7 +301,7 @@ public class SRParser extends SRParserParameters
 						}
 					}));
 				}
-				System.err.println("[Info (allan)]Finish parsing sentence...");
+
 				/*
 				 * sequentially process results of a thread group
 				 */
@@ -343,7 +342,7 @@ public class SRParser extends SRParserParameters
 					dTotalScore += so.scprf;
 					cnt.increment();
 				}
-				System.err.println("[Info (allan)]Finish retrieving results...");
+
 				// perceptron update
 				if (bTrain)
 				{
