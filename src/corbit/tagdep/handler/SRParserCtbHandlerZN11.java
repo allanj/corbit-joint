@@ -235,7 +235,7 @@ public class SRParserCtbHandlerZN11 extends SRParserHandler
 		int val1l = val1 != null ? val1[0] : -1;
 		int val1r = val1 != null ? val1[1] : -1;
 		
-		String sPunct = (wst0 != null && wst1 != null) ? getPunctInBetween(s0.sent, wst0.index, wst1.index) : OOR;
+		String sPunct = (wst0 != null && wst1 != null) ? getPunctInBetween(s0.sent, wst0.index, wst1.index) : OOR; //all punctuations are recognized as PU in ctb tree bank
 		boolean bAdjoin = (wst0 != null && wst1 != null && Math.abs(wst1.index - wst0.index) == 1);
 
 		// debugging assertions

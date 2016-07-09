@@ -236,7 +236,26 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		String spst1lc = s0.atoms.get(AtomsHS10.F_p_st1lc);
 		String sPunct = s0.atoms.get(AtomsHS10.F_punct);
 		String sAdjoin = s0.atoms.get(AtomsHS10.F_adjoin);
-
+		
+//		System.err.println("just print the features..  current state:"+s0.toString()+" action:"+act.toString());
+//		System.err.println("sfst0:"+sfst0);
+//		System.err.println("sfst1:"+sfst1);
+//		System.err.println("sfqp1:"+sfqp1);
+//		System.err.println("sfqf1:"+sfqf1);
+//		System.err.println("spst0:"+spst0);
+//		System.err.println("spst1:"+spst1);
+//		System.err.println("spst2:"+spst2);
+//		System.err.println("spqp1:"+spqp1);
+//		System.err.println("spqp2:"+spqp2);
+//		System.err.println("spqf1:"+spqf1);
+//		System.err.println("spqf2:"+spqf2);
+//		System.err.println("spst0rc:" +spst0rc);
+//		System.err.println("spst0lc:" +spst0lc);
+//		System.err.println("spst1rc:" +spst1rc);
+//		System.err.println("spst1lc:" +spst1lc);
+//		System.err.println("sPunct:" + sPunct);
+//		System.err.println("sAdjoin:"+sAdjoin);
+		
 		int curidx = s0.curidx;
 		final int szSent = s0.sent.size();
 
@@ -300,7 +319,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		addFeature(v, "FP05-" + spst1, sAct, 1.0, bAdd, vocab); //s1t
 		addFeature(v, "FP06-" + sfst1 + SEP + spst1, sAct, 1.0, bAdd, vocab); //s1w+s1t
 
-		addFeature(v, "FP07-" + sfqf1, sAct, 1.0, bAdd, vocab); //q1w
+		addFeature(v, "FP07-" + sfqf1, sAct, 1.0, bAdd, vocab); //q0w
 
 		addFeature(v, "FP10-" + sfst0 + SEP + sfst1, sAct, 1.0, bAdd, vocab); //s0w+s1w
 		addFeature(v, "FP11-" + spst0 + SEP + spst1, sAct, 1.0, bAdd, vocab); //s0t+s1t
@@ -329,15 +348,15 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 
 				if (bAddToDelay1)
 				{
-					vd.add("FP08d-" + spqf1 + SEP + sAct);
-					vd.add("FP09d-" + sfqf1 + SEP + spqf1 + SEP + sAct);
-					vd.add("FP12d-" + spst0 + SEP + spqf1 + SEP + sAct);
-					vd.add("FP19d-" + spst0 + SEP + spst1 + SEP + spqf1 + SEP + sAct);
-					vd.add("FP21d-" + sfst0 + SEP + spst1 + SEP + spqf1 + SEP + sAct);
+					vd.add("FP08d-" + spqf1 + SEP + sAct); //  q0t
+					vd.add("FP09d-" + sfqf1 + SEP + spqf1 + SEP + sAct); // q0w+q0t
+					vd.add("FP12d-" + spst0 + SEP + spqf1 + SEP + sAct); // s0t+q0t
+					vd.add("FP19d-" + spst0 + SEP + spst1 + SEP + spqf1 + SEP + sAct); //s0t+s1t+q0t
+					vd.add("FP21d-" + sfst0 + SEP + spst1 + SEP + spqf1 + SEP + sAct); //s0w+s1t+q0t
 				}
 				else
 				{
-					addFeature(v, "FP08d-" + spqf1, sAct, 1.0, bAdd, vocab);
+					addFeature(v, "FP08d-" + spqf1, sAct, 1.0, bAdd, vocab); // q0t
 					addFeature(v, "FP09d-" + sfqf1 + SEP + spqf1, sAct, 1.0, bAdd, vocab);
 					addFeature(v, "FP12d-" + spst0 + SEP + spqf1, sAct, 1.0, bAdd, vocab);
 					addFeature(v, "FP19d-" + spst0 + SEP + spst1 + SEP + spqf1, sAct, 1.0, bAdd, vocab);
@@ -345,8 +364,8 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 				}
 				if (bAddToDelay1 || bAddToDelay2)
 				{
-					vd.add("FP18d-" + spst0 + SEP + spqf1 + SEP + spqf2 + SEP + sAct);
-					vd.add("FP20d-" + sfst0 + SEP + spqf1 + SEP + spqf2 + SEP + sAct);
+					vd.add("FP18d-" + spst0 + SEP + spqf1 + SEP + spqf2 + SEP + sAct); //s0t+q0t+q1t
+					vd.add("FP20d-" + sfst0 + SEP + spqf1 + SEP + spqf2 + SEP + sAct); //s0w+q0t+q1t
 				}
 				else
 				{
@@ -358,7 +377,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 			{
 				if (spqf1 != null)
 				{
-					addFeature(v, "FP08-" + spqf1, sAct, 1.0, bAdd, vocab);
+					addFeature(v, "FP08-" + spqf1, sAct, 1.0, bAdd, vocab); //q0t
 					addFeature(v, "FP09-" + sfqf1 + SEP + spqf1, sAct, 1.0, bAdd, vocab);
 					addFeature(v, "FP12-" + spst0 + SEP + spqf1, sAct, 1.0, bAdd, vocab);
 					addFeature(v, "FP19-" + spst0 + SEP + spst1 + SEP + spqf1, sAct, 1.0, bAdd, vocab);
@@ -373,18 +392,18 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 			}
 		}
 
-		addFeature(v, "FP22-" + spst0 + SEP + spst1 + SEP + spst1lc, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "FP23-" + spst0 + SEP + spst1 + SEP + spst1rc, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "FP24-" + spst0 + SEP + spst0rc + SEP + spst1, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "FP25-" + spst0 + SEP + spst0lc + SEP + spst1, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "FP22-" + spst0 + SEP + spst1 + SEP + spst1lc, sAct, 1.0, bAdd, vocab);  //s0t+s1t+s1.lc.t
+		addFeature(v, "FP23-" + spst0 + SEP + spst1 + SEP + spst1rc, sAct, 1.0, bAdd, vocab); //s0t+s1t+s1.rc.t
+		addFeature(v, "FP24-" + spst0 + SEP + spst0rc + SEP + spst1, sAct, 1.0, bAdd, vocab);  //s0t+s0.rc.t+s1t
+		addFeature(v, "FP25-" + spst0 + SEP + spst0lc + SEP + spst1, sAct, 1.0, bAdd, vocab);  //s0t+s0.lc.t+s1t not presented in paper  it should be 
 //		addFeature(v, "FP25-" + spst0 + SEP + spst1lc + SEP + spst1, sAct, 1.0, bAdd, vocab); // compatible with run0818--run0905
-		addFeature(v, "FP26-" + sfst0 + SEP + spst1 + SEP + spst1rc, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "FP27-" + sfst0 + SEP + spst1 + SEP + spst0lc, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "FP28-" + spst0 + SEP + spst1 + SEP + spst2, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "FP26-" + sfst0 + SEP + spst1 + SEP + spst1rc, sAct, 1.0, bAdd, vocab);  //s0w+s1t+s1.rc.t
+		addFeature(v, "FP27-" + sfst0 + SEP + spst1 + SEP + spst0lc, sAct, 1.0, bAdd, vocab); //s0w+s1t+s1.lc.t
+		addFeature(v, "FP28-" + spst0 + SEP + spst1 + SEP + spst2, sAct, 1.0, bAdd, vocab);  //s0t+s1t+s2t
 
 		addFeature(v, "FP29-", sAct, sAdjoin.equals("true") ? 1.0 : 0.0, bAdd, vocab);
 		addFeature(v, "FP30-" + spst0 + SEP + spst1, sAct, sAdjoin.equals("true") ? 1.0 : 0.0, bAdd, vocab);
-		addFeature(v, "FP31-" + sPunct, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "FP31-" + sPunct, sAct, 1.0, bAdd, vocab); //
 		addFeature(v, "FP32-" + spst0 + SEP + spst1 + SEP + sPunct, sAct, 1.0, bAdd, vocab);
 		return spqf1;
 	}

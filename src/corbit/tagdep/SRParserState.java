@@ -215,7 +215,7 @@ public class SRParserState implements Comparable<SRParserState>
 		for (int i = pstck.length - 1; i >= 0; --i)
 			if (pstck[i] != null)
 				sb.append(pstck[i].toString() + " ");
-		sb.append(": ");
+		sb.append(" buffer: ");
 		for (int i = curidx; i < sent.size(); ++i)
 			sb.append(sent.get(i).toString() + " ");
 		return sb.toString();
