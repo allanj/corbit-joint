@@ -77,24 +77,26 @@ public class MaltReader extends ParseReader
 					String[] r = l.get(i).split("\\t");
 					int iIndex = i;
 					int iHead = Integer.parseInt(r[2]) - 1;
-					String sForm = Normalizer.normalize(r[0], Normalizer.Form.NFKC);
+					String sForm = r[0]; 
 					String sPos = r[1];
+					String realPos = r[3];
 
-					if (!sPos.startsWith("-") && sPos.contains("-"))
-						;//sPos = sPos.split("-")[0];
-					else if (sPos.equals("-NONE-"))
-						sPos = "NONE";
-					else if (sPos.equals("PU/"))
-						sPos = "PU";
-					if (!posSet.contains(sPos))
-						Console.writeLine("Unknown POS TAG: " + sPos);
+//					if (!sPos.startsWith("-") && sPos.contains("-"))
+//						;//sPos = sPos.split("-")[0];
+//					else if (sPos.equals("-NONE-"))
+//						sPos = "NONE";
+//					else if (sPos.equals("PU/"))
+//						sPos = "PU";
+//					if (!posSet.contains(sPos))
+//						Console.writeLine("Unknown POS TAG: " + sPos);
 
 					DepTree dw = s.get(i);
 					dw.sent = s;
 					dw.index = iIndex;
 					dw.form = sForm;
-					dw.pos = sPos;
+					dw.pos = sPos; //actually is entity
 					dw.head = iHead;
+					dw.entity = realPos;
 
 					if (iHead < -1 || iHead >= s.size() || iHead == i)
 					{
