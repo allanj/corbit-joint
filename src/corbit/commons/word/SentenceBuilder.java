@@ -100,8 +100,8 @@ public class SentenceBuilder
 			}
 		}
 
-		if (labelSet != null && label != null && !labelSet.contains(label.toString()))
-			Console.writeLine("Unknown arc label: " + label);
+//		if (labelSet != null && label != null && !labelSet.contains(label.toString()))
+//			Console.writeLine("Unknown arc label: " + label);
 
 		sent.add(new IndexWord(sent, lBounds.size(), iHead, sForm, sPos, label));
 		sb.append(sForm);
