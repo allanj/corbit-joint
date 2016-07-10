@@ -7,7 +7,7 @@ public class MaltTagDictionary extends TagDictionary {
 
 	
 	//public static final String[] ssEngTags = { "NNS","CC","DT","JJ","NN","VBZ","IN",".","WP"};
-	public static final String[] ssEngTags = { "B-person","I-person","B-gpe","O"};
+	public static final String[] ssEngTags = { "B-person","I-person","B-gpe","I-gpe","B-organization","I-organization","B-MISC","I-MISC","O"};
 	
 	
 	public MaltTagDictionary(){

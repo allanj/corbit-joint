@@ -82,7 +82,7 @@ public class MaltReader extends ParseReader
 						sb = null;
 						break;
 					}
-					String sForm = Normalizer.normalize(mc.group(1), Normalizer.Form.NFKC);
+					String sForm = mc.group(1); //no need to normalize for English //Normalizer.normalize(mc.group(1), Normalizer.Form.NFKC);
 					String sPos = mc.group(2);
 					int iHead = Integer.parseInt(mc.group(3)) - 1;
 					ArcLabel label = ArcLabel.getLabel(mc.group(4));

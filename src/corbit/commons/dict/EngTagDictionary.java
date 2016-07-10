@@ -6,9 +6,9 @@ import java.util.TreeSet;
 public class EngTagDictionary extends TagDictionary {
 
 	//public static final String[] ssEngTags = { "NNS","CC","DT","JJ","NN","VBZ","IN",".","WP"};
-	public static final String[] ssEngTags = { "B-person","I-person","O","B-gpe"};
+	public static final String[] ssEngTags = { "B-person","I-person","B-gpe","I-gpe","B-organization","I-organization","B-MISC","I-MISC","O"};
 	public static final String[] arcLabels = { "a","b","c","d","e","f","g","h","i","j","k"
-			,"l","m","n","o","p","q","r","s","t","u","v","w", };
+			,"l","m","n","o","p","q","r","s","t","u","v","w",};
 	
 	
 	public EngTagDictionary(){

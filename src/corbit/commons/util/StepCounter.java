@@ -55,9 +55,9 @@ public class StepCounter
 		if (iFrequency > 0 && (iCount % iFrequency == 0))
 		{
 			if (iCount % (iFrequency * 20) == 0)
-				System.out.println(String.format("%5d", iCount));
+				System.out.println("counter:"+String.format("%5d", iCount));
 			else
-				System.out.print(String.format("%3d ", iCount / iFrequency));
+				System.out.print("counter:"+String.format("%3d ", iCount / iFrequency));
 		}
 
 	}
