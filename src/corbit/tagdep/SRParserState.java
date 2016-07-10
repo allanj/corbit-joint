@@ -69,6 +69,7 @@ public class SRParserState implements Comparable<SRParserState>
 
 	public int[] heads;
 	public String[] pos;
+	public String[] entity;
 
 	public List<String> fvdelay;
 
@@ -169,7 +170,7 @@ public class SRParserState implements Comparable<SRParserState>
 		DepTreeSentence sent = new DepTreeSentence();
 
 		for (int i = 0; i < s.sent.size(); ++i)
-			sent.add(new DepTree(sent, i, s.sent.get(i).form, null, -2));
+			sent.add(new DepTree(sent, i, s.sent.get(i).form, null, s.sent.get(i).entity, -2));
 
 		List<DepTree> lc = new ArrayList<DepTree>();
 		List<DepTree> _lc = new ArrayList<DepTree>();

@@ -36,9 +36,18 @@ public class DepWord extends Word
 	public int head;
 	public DepTreeSentence sent;
 
-	public DepWord(DepTreeSentence sent, int index, String form, String pos, int head)
+	/**
+	 * 
+	 * @param sent
+	 * @param index
+	 * @param form
+	 * @param pos: actually this one is entity
+	 * @param entity: actually this one is the real pos tag
+	 * @param head
+	 */
+	public DepWord(DepTreeSentence sent, int index, String form, String pos, String entity, int head)
 	{
-		super(form, pos);
+		super(form, pos, entity);
 		this.sent = sent;
 		this.index = index;
 		this.head = head;
@@ -46,12 +55,12 @@ public class DepWord extends Word
 
 	public DepWord(DepWord dw)
 	{
-		this(dw.sent, dw.index, dw.form, dw.pos, dw.head);
+		this(dw.sent, dw.index, dw.form, dw.pos,dw.entity, dw.head);
 	}
 
 	public DepWord()
 	{
-		this(null, -1, null, null, -1);
+		this(null, -1, null, null, null, -1);
 	}
 
 	@Override

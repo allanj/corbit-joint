@@ -36,12 +36,12 @@ public class Word
 	public String pos;
 	public String entity;
 
-	public Word(String form, String pos)
-	{
-		this.form = form;
-		this.pos = pos;
-		this.entity = "null entity";
-	}
+//	public Word(String form, String pos)
+//	{
+//		this.form = form;
+//		this.pos = pos;
+//		this.entity = "null entity";
+//	}
 	
 	public Word(String form, String pos, String entity)
 	{
@@ -53,7 +53,7 @@ public class Word
 	@Override
 	public String toString()
 	{
-		return form + "/" + (pos != null ? pos : "--") + (entity != null ? entity : "--");
+		return form + "/" + (pos != null ? pos : "--") +"/"+ (entity != null ? entity : "--");
 	}
 
 	@Override

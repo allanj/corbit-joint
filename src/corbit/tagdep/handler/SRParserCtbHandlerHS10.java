@@ -157,17 +157,30 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		String sfqp1 = idx > 0 ? s0.sent.get(idx - 1).form : OOR;
 		String sfqf1 = idx < s0.sent.size() ? s0.sent.get(idx).form : OOR;
 
-		String spst0 = wst0.pos;
-		String spst1 = wst1 != null ? wst1.pos : OOR;
-		String spst2 = wst2 != null ? wst2.pos : OOR;
-		String spqp1 = idx > 0 ? s0.pos[idx - 1] : OOR;
-		String spqp2 = idx > 1 ? (s0.idbgn <= idx - 2) ? s0.pos[idx - 2] : s1.pos[idx - 2] : OOR;
-		String spqf1 = idx < s0.sent.size() ? s0.sent.get(idx).pos : OOR;
-		String spqf2 = idx < s0.sent.size() - 1 ? s0.sent.get(idx + 1).pos : OOR;
-		String spst0rc = wst0rc != null ? s0.pos[wst0rc.index] : OOR;
-		String spst0lc = wst0lc != null ? s0.pos[wst0lc.index] : OOR;
-		String spst1rc = wst1rc != null ? s1.pos[wst1rc.index] : OOR;
-		String spst1lc = wst1lc != null ? s1.pos[wst1lc.index] : OOR;
+//		String spst0 = wst0.pos;
+//		String spst1 = wst1 != null ? wst1.pos : OOR;
+//		String spst2 = wst2 != null ? wst2.pos : OOR;
+//		String spqp1 = idx > 0 ? s0.pos[idx - 1] : OOR;
+//		String spqp2 = idx > 1 ? (s0.idbgn <= idx - 2) ? s0.pos[idx - 2] : s1.pos[idx - 2] : OOR;
+//		String spqf1 = idx < s0.sent.size() ? s0.sent.get(idx).pos : OOR;
+//		String spqf2 = idx < s0.sent.size() - 1 ? s0.sent.get(idx + 1).pos : OOR;
+//		String spst0rc = wst0rc != null ? s0.pos[wst0rc.index] : OOR;
+//		String spst0lc = wst0lc != null ? s0.pos[wst0lc.index] : OOR;
+//		String spst1rc = wst1rc != null ? s1.pos[wst1rc.index] : OOR;
+//		String spst1lc = wst1lc != null ? s1.pos[wst1lc.index] : OOR;
+		
+		//cause the entity now is the real pos tag
+		String spst0 = wst0.entity;
+		String spst1 = wst1 != null ? wst1.entity : OOR;
+		String spst2 = wst2 != null ? wst2.entity : OOR;
+		String spqp1 = idx > 0 ? s0.sent.get(idx-1).entity : OOR;
+		String spqp2 = idx > 1 ? (s0.idbgn <= idx - 2) ? s0.sent.get(idx-2).entity : s1.sent.get(idx-2).entity : OOR;
+		String spqf1 = idx < s0.sent.size() ? s0.sent.get(idx).entity : OOR;
+		String spqf2 = idx < s0.sent.size() - 1 ? s0.sent.get(idx + 1).entity : OOR;
+		String spst0rc = wst0rc != null ? s0.sent.get(wst0rc.index).entity : OOR;
+		String spst0lc = wst0lc != null ? s0.sent.get(wst0lc.index).entity : OOR;
+		String spst1rc = wst1rc != null ? s1.sent.get(wst1rc.index).entity : OOR;
+		String spst1lc = wst1lc != null ? s1.sent.get(wst1lc.index).entity : OOR;
 
 		String sPunct = (wst0 != null && wst1 != null) ? getPunctInBetween(s0.sent, wst0.index, wst1.index) : OOR;
 		boolean bAdjoin = (wst0 != null && wst1 != null && Math.abs(wst1.index - wst0.index) == 1);
@@ -293,6 +306,8 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 				SRParserCtbHandlerHS10.setTagSyntacticFeatures(v, m_vocab, bAdd, sAct, sfst0, sfqf1, spst0, spst1, spst0lc);
 		}
 		
+		//use the spqp to construct the entity features
+		
 		return v;
 	}
 
@@ -403,8 +418,10 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 
 		addFeature(v, "FP29-", sAct, sAdjoin.equals("true") ? 1.0 : 0.0, bAdd, vocab);
 		addFeature(v, "FP30-" + spst0 + SEP + spst1, sAct, sAdjoin.equals("true") ? 1.0 : 0.0, bAdd, vocab);
-		addFeature(v, "FP31-" + sPunct, sAct, 1.0, bAdd, vocab); //
-		addFeature(v, "FP32-" + spst0 + SEP + spst1 + SEP + sPunct, sAct, 1.0, bAdd, vocab);
+		
+		//remove the punctuation features
+		//addFeature(v, "FP31-" + sPunct, sAct, 1.0, bAdd, vocab); 
+		//addFeature(v, "FP32-" + spst0 + SEP + spst1 + SEP + sPunct, sAct, 1.0, bAdd, vocab);
 		return spqf1;
 	}
 
@@ -413,16 +430,16 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 			String sfst0, String sfqf1, String spst0, String spst1, String spst0lc)
 	{
 		final int ln_sfst0 = sfst0.length();
-		final char c_sfst0_b = sfst0.charAt(0);
-		final char c_sfst0_e = sfst0.charAt(ln_sfst0 - 1);
+		final char c_sfst0_b = sfst0.charAt(0); //s0w first char
+		final char c_sfst0_e = sfst0.charAt(ln_sfst0 - 1); //s0w last char
 		
-		addFeature(v, "SF01-" + sfst0 + SEP + sfqf1, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "SF02-" + spst0 + SEP + sfqf1, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "SF03-" + spst0 + SEP + spst0lc + sfqf1, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "SF04-" + c_sfst0_b, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "SF05-" + c_sfst0_e, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "SF06-" + c_sfst0_e + sfqf1, sAct, 1.0, bAdd, vocab);
-		addFeature(v, "SF07-" + spst1 + SEP + spst0 + SEP + sfqf1, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "SF01-" + sfst0 + SEP + sfqf1, sAct, 1.0, bAdd, vocab); //s0w+q0w
+		addFeature(v, "SF02-" + spst0 + SEP + sfqf1, sAct, 1.0, bAdd, vocab); //s0t+q0w
+		addFeature(v, "SF03-" + spst0 + SEP + spst0lc + sfqf1, sAct, 1.0, bAdd, vocab); //s0t+s0.lc.t+q0w
+		addFeature(v, "SF04-" + c_sfst0_b, sAct, 1.0, bAdd, vocab); // s0w.b
+		addFeature(v, "SF05-" + c_sfst0_e, sAct, 1.0, bAdd, vocab); //s0w.e
+		addFeature(v, "SF06-" + c_sfst0_e + sfqf1, sAct, 1.0, bAdd, vocab); //s0w.e+q0w
+		addFeature(v, "SF07-" + spst1 + SEP + spst0 + SEP + sfqf1, sAct, 1.0, bAdd, vocab); // s1t+s0t+q0w
 	}
 
 

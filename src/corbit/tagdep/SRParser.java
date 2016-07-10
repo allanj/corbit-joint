@@ -406,6 +406,10 @@ public class SRParser extends SRParserParameters
 		sw.lap();
 	}
 
+	/**
+	 * Only used when command is "Run"
+	 * @throws IOException
+	 */
 	public void run() throws IOException
 	{
 		SentenceParser sp = new SentenceParser(false, m_iParallel > 1);
@@ -413,9 +417,10 @@ public class SRParser extends SRParserParameters
 
 		String buf;
 		int n = 0;
-		
+		System.err.println("buf: running in the sr parser");
 		main: while ((buf = br.readLine()) != null)
 		{
+			
 			buf = Statics.trimSpecial(buf);
 			if (buf.length() == 0)
 			{
@@ -434,7 +439,7 @@ public class SRParser extends SRParserParameters
 					System.err.println("POS tags are required when --assign-gold option is used.");
 					continue main;
 				}
-				sent.add(new DepTree(sent, i, word[0], m_bAssignGoldPos && word.length > 1 ? word[1] : null, -2));
+				sent.add(new DepTree(sent, i, word[0], m_bAssignGoldPos && word.length > 1 ? word[1] : null, word[2], -2));
 			}
 			ParseResult pr = sp.parseSentence(sent);
 			DepTreeSentence osent = SRParserState.getParsedResult(pr.parsedState);
@@ -625,7 +630,7 @@ public class SRParser extends SRParserParameters
 	{
 		DepTreeSentence sent = new DepTreeSentence();
 		for (DepTree dw : gsent)
-			sent.add(new DepTree(sent, dw.index, dw.form, m_bUseGoldPos ? dw.pos : null, -2));
+			sent.add(new DepTree(sent, dw.index, dw.form, m_bUseGoldPos ? dw.pos : null, dw.entity, -2));
 		// sent.add(new DepTree(sent, dw.index, dw.form, null, -2));
 		return sent;
 	}
