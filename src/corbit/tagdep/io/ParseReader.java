@@ -30,8 +30,11 @@
 
 package corbit.tagdep.io;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
@@ -108,4 +111,28 @@ public abstract class ParseReader extends Generator<DepTreeSentence>
 		pw.close();
 	}
 
+	public static void ecrf2Malt(String sFile, String sOutFile) throws IOException{
+		PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(sOutFile), "UTF-8"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(sFile),"UTF-8"));
+		
+		String line = null;
+		
+		while((line = br.readLine())!=null){
+			String[] vals = line.split("\\t");
+			if(vals.length<2){
+				pw.write("\n");
+				continue;
+			}
+			pw.write(vals[1]+"\t"+vals[3]+"\t"+vals[4]+"\t"+vals[2]+"\n");
+		}
+		br.close();
+		pw.close();
+	}
+	
+//	public static void main(String[] args) throws IOException{
+//		ecrf2Malt("data/ecrf/ecrf.train.MISC.txt", "data/malt/malt.train.txt");
+//		ecrf2Malt("data/ecrf/ecrf.devel.MISC.txt", "data/malt/malt.devel.txt");
+//		ecrf2Malt("data/ecrf/ecrf.test.MISC.txt", "data/malt/malt.test.txt");
+//	}
+	
 }
