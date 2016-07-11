@@ -309,8 +309,8 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		}
 		
 		//use the spqp to construct the entity features
-		
-		setEntityFeatures(v, m_vocab, bAdd, sAct, sfqf1, spqf1, sfqp1, spqp1, sfqf2, spqf2, prevEntity);
+		if(act.isShiftPosAction())
+			setEntityFeatures(v, m_vocab, bAdd, sAct, sfqf1, spqf1, sfqp1, spqp1, sfqf2, spqf2, prevEntity);
 		
 		return v;
 	}
