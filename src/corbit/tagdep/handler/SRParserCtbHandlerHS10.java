@@ -68,7 +68,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		static final int F_p_st0lc = 18;
 		static final int F_p_st1rc = 19;
 		static final int F_p_st1lc = 20;
-		static final int F_punct = 21;
+		static final int F_prevEntity = 21;
 		static final int F_adjoin = 22;
 		static final int F_npos = 23;
 
@@ -96,7 +96,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 				String p_st0lc,
 				String p_st1rc,
 				String p_st1lc,
-				String punct,
+				String p_prevEntity,
 				boolean adjoin,
 				String npos,
 				TreeSet<String> fvdelay)
@@ -124,7 +124,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 			features[F_p_st0lc] = p_st0lc;
 			features[F_p_st1rc] = p_st1rc;
 			features[F_p_st1lc] = p_st1lc;
-			features[F_punct] = punct;
+			features[F_prevEntity] = p_prevEntity;
 			features[F_adjoin] = Boolean.toString(adjoin);
 			features[F_npos] = npos;
 			setHash();
@@ -182,9 +182,11 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		String spst1rc = wst1rc != null ? s1.sent.get(wst1rc.index).entity : OOR;
 		String spst1lc = wst1lc != null ? s1.sent.get(wst1lc.index).entity : OOR;
 
-		String sPunct = (wst0 != null && wst1 != null) ? getPunctInBetween(s0.sent, wst0.index, wst1.index) : OOR;
+		//String sPunct = (wst0 != null && wst1 != null) ? getPunctInBetween(s0.sent, wst0.index, wst1.index) : OOR;
 		boolean bAdjoin = (wst0 != null && wst1 != null && Math.abs(wst1.index - wst0.index) == 1);
 
+		String prevEntity = idx > 0 ? s0.pos[idx-1] : "O";
+		
 		// debugging assertions
 		
 		assert (spst0 != null);
@@ -221,7 +223,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 				spst0lc,
 				spst1rc,
 				spst1lc,
-				sPunct,
+				prevEntity,
 				bAdjoin,
 				OOR,
 				s0.fvdelay != null ? new TreeSet<String>(s0.fvdelay) : null);
@@ -247,7 +249,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		String spst0lc = s0.atoms.get(AtomsHS10.F_p_st0lc);
 		String spst1rc = s0.atoms.get(AtomsHS10.F_p_st1rc);
 		String spst1lc = s0.atoms.get(AtomsHS10.F_p_st1lc);
-		String sPunct = s0.atoms.get(AtomsHS10.F_punct);
+		String prevEntity = s0.atoms.get(AtomsHS10.F_prevEntity);
 		String sAdjoin = s0.atoms.get(AtomsHS10.F_adjoin);
 		
 //		System.err.println("just print the features..  current state:"+s0.toString()+" action:"+act.toString());
@@ -283,7 +285,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		 */
 		
 		if (act == PDAction.REDUCE_LEFT || act == PDAction.REDUCE_RIGHT || act == PDAction.SHIFT || act.isShiftPosAction())
-			SRParserCtbHandlerHS10.setParseFeaturesHS10(v, vd, m_vocab, bAdd, sAct, sfst0, sfst1, sfqf1, spst0, spst1, spst2, spqf1, spqf2, spst0rc, spst0lc, spst1rc, spst1lc, sPunct, sAdjoin, curidx, szSent, m_params.m_bUseLookAhead);
+			SRParserCtbHandlerHS10.setParseFeaturesHS10(v, vd, m_vocab, bAdd, sAct, sfst0, sfst1, sfqf1, spst0, spst1, spst2, spqf1, spqf2, spst0rc, spst0lc, spst1rc, spst1lc, sAdjoin, curidx, szSent, m_params.m_bUseLookAhead);
 
 		/*
 		 *  evaluate delayed features
@@ -308,6 +310,8 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		
 		//use the spqp to construct the entity features
 		
+		setEntityFeatures(v, m_vocab, bAdd, sAct, sfqf1, spqf1, sfqp1, spqp1, sfqf2, spqf2, prevEntity);
+		
 		return v;
 	}
 
@@ -322,7 +326,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 			String sfst0, String sfst1, String sfqf1, String spst0,
 			String spst1, String spst2, String spqf1, String spqf2,
 			String spst0rc, String spst0lc, String spst1rc, String spst1lc,
-			String sPunct, String sAdjoin,
+			String sAdjoin,
 			final int curidx, final int szSent,
 			boolean bUseLookAhead)
 	{
@@ -441,6 +445,51 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		addFeature(v, "SF06-" + c_sfst0_e + sfqf1, sAct, 1.0, bAdd, vocab); //s0w.e+q0w
 		addFeature(v, "SF07-" + spst1 + SEP + spst0 + SEP + sfqf1, sAct, 1.0, bAdd, vocab); // s1t+s0t+q0w
 	}
-
+	
+	/**
+	 * The function to set the entity features
+	 * @param v
+	 * @param vocab
+	 * @param bAdd
+	 * @param sAct
+	 * @param sfqf1: q0w
+	 * @param spqf1: q0t
+	 * @param sfqp1: q_{idx-1}w
+	 * @param spqp1: q_{idx-1}t
+	 * @param sfqf2: q_{idx+1}w
+	 * @param spqf2: q_{idx+1}t
+	 */
+	static void setEntityFeatures(IntFeatVector v, Vocab vocab, boolean bAdd, String sAct, 
+			String sfqf1, String spqf1, String sfqp1, String spqp1, String sfqf2, String spqf2, String prevEntity){
+		addFeature(v, "EN01-" + sfqf1, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN02-" + spqf1, sAct, 1.0, bAdd, vocab);
+		
+		addFeature(v, "EN03-" + sfqp1, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN04-" + spqp1, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN05-" + sfqf2, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN06-" + spqf2, sAct, 1.0, bAdd, vocab);
+		
+		addFeature(v, "EN07-" + spqp1 + SEP + spqf1, sAct, 1.0, bAdd, vocab);
+		
+		for(int plen = 1;plen<=6;plen++){
+			if(sfqf1.length()>=plen){
+				String suff = sfqf1.substring(sfqf1.length()-plen, sfqf1.length());
+				addFeature(v, "EN08-"+ "LEN:"+ plen + SEP + suff, sAct, 1.0, bAdd, vocab);
+				String pref = sfqf1.substring(0,plen);
+				addFeature(v, "EN09-"+ "LEN:"+ plen + SEP + pref, sAct, 1.0, bAdd, vocab);
+			}
+		}
+		
+		addFeature(v, "EN10-"+ prevEntity, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN11-"+ sfqf1 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN12-"+ sfqp1 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN13-"+ sfqf2 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
+		
+		addFeature(v, "EN14-"+ spqf1 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN15-"+ spqp1 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN16-"+ spqf2 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN17-"+ spqp1 + SEP + spqf1 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
+		
+	}
 
 }

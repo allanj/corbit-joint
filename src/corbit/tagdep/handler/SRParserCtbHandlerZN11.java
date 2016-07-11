@@ -348,7 +348,7 @@ public class SRParserCtbHandlerZN11 extends SRParserHandler
 		
 		if (act == PDAction.REDUCE_LEFT || act == PDAction.REDUCE_RIGHT || act == PDAction.SHIFT || act.isShiftPosAction())
 		{
-			SRParserCtbHandlerHS10.setParseFeaturesHS10(v, vd, m_vocab, bAdd, sAct, sfst0, sfst1, sfqf1, spst0, spst1, spst2, spqf1, spqf2, spst0rc, spst0lc, spst1rc, spst1lc, sPunct, sAdjoin, curidx, szSent, m_params.m_bUseLookAhead);
+			SRParserCtbHandlerHS10.setParseFeaturesHS10(v, vd, m_vocab, bAdd, sAct, sfst0, sfst1, sfqf1, spst0, spst1, spst2, spqf1, spqf2, spst0rc, spst0lc, spst1rc, spst1lc, sAdjoin, curidx, szSent, m_params.m_bUseLookAhead);
 			SRParserCtbHandlerZN11.setParseFeaturesZN11(v, m_vocab, sAct, bAdd, sfst0, sfst1, spst0, spst1, spst0lc, spst1rc, spst1lc, sDist, sVal0l, sVal1l, sVal1r, sfst0lc, sfst1lc, sfst1rc, sfst0lc2, sfst1lc2, sfst1rc2,
 					spst0lc2, spst1lc2, spst1rc2);
 		}

@@ -55,7 +55,8 @@ public class ParseWriter
 		{
 			DepTree dt = sent.get(i);
 			DepTree dg = gsent.get(i);
-			sw.print(String.format("%d:(%d)_(%s)_(%s) ", i, bGoldHead ? dg.head : dt.head, dt.form, bGoldPos ? dg.pos : dt.pos));
+			//sw.print(String.format("%d:(%d)_(%s)_(%s) ", i, bGoldHead ? dg.head : dt.head, dt.form, bGoldPos ? dg.pos : dt.pos));
+			sw.println(String.format("%s %s %s %s", dt.form, dt.entity, dg.pos, dt.pos));
 		}
 		sw.println();
 	}
