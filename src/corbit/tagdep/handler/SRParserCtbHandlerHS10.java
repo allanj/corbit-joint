@@ -310,11 +310,12 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		}
 		
 		//use the spqp to construct the entity features
-		if(act.isShiftPosAction()){
+		if(act == PDAction.REDUCE_LEFT || act == PDAction.REDUCE_RIGHT  || act.isShiftPosAction()){
 //			System.err.println(s0.toString());
 //			System.err.println(act.toString());
 			setEntityFeatures(v, m_vocab, bAdd, sAct, sfqf1, spqf1, sfqp1, spqp1, sfqf2, spqf2, prevEntity);
 		}
+		
 		
 		return v;
 	}
@@ -482,7 +483,6 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 				addFeature(v, "EN09-"+ "LEN:"+ plen + SEP + pref, sAct, 1.0, bAdd, vocab);
 			}
 		}
-		
 		addFeature(v, "EN10-"+ prevEntity, sAct, 1.0, bAdd, vocab);
 		addFeature(v, "EN11-"+ sfqf1 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
 		addFeature(v, "EN12-"+ sfqp1 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
@@ -494,5 +494,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		addFeature(v, "EN17-"+ spqp1 + SEP + spqf1 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
 		
 	}
+	
+	
 
 }
