@@ -174,8 +174,10 @@ public class SRParserTransitionStd extends SRParserTransition
 					else
 					{
 						//for unseen word, we consider all the possible tags
-						String[] tagArr = m_dict.getTagCandidates(s.sent.get(s.curidx).form);
-						if(tagArr==null) tagArr = m_dict.getTagList();
+//						String[] tagArr = m_dict.getTagCandidates(s.sent.get(s.curidx).form);
+//						if(tagArr==null) tagArr = m_dict.getTagList();
+						
+						String[] tagArr = m_dict.getTagList();
 						for (String spqf1 : tagArr)
 							l.add(PDAction.getShiftPosAction(spqf1));
 					}
