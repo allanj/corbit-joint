@@ -313,7 +313,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		if(act == PDAction.REDUCE_LEFT || act == PDAction.REDUCE_RIGHT  || act.isShiftPosAction()){
 //			System.err.println(s0.toString());
 //			System.err.println(act.toString());
-			setEntityFeatures(v, m_vocab, bAdd, sAct, sfqf1, spqf1, sfqp1, spqp1, sfqf2, spqf2, prevEntity);
+			setEntityFeatures(v, m_vocab, bAdd, sAct, sfst0, spst0, spst0lc, spst0rc, sfqf1, spqf1, sfqp1, spqp1, sfqf2, spqf2, prevEntity);
 		}
 		
 		
@@ -464,7 +464,8 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 	 * @param sfqf2: q_{idx+1}w
 	 * @param spqf2: q_{idx+1}t
 	 */
-	static void setEntityFeatures(IntFeatVector v, Vocab vocab, boolean bAdd, String sAct, 
+	static void setEntityFeatures(IntFeatVector v, Vocab vocab, boolean bAdd, String sAct,
+			String sfst0, String spst0, String spst0lc, String spst0rc,
 			String sfqf1, String spqf1, String sfqp1, String spqp1, String sfqf2, String spqf2, String prevEntity){
 		addFeature(v, "EN01-" + sfqf1, sAct, 1.0, bAdd, vocab);
 		addFeature(v, "EN02-" + spqf1, sAct, 1.0, bAdd, vocab);
@@ -493,6 +494,16 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		addFeature(v, "EN16-"+ spqf2 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
 		addFeature(v, "EN17-"+ spqp1 + SEP + spqf1 + SEP + prevEntity, sAct, 1.0, bAdd, vocab);
 		
+		
+		addFeature(v, "EN18-" + sfst0, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN19-" + spst0, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN20-" + sfst0 + SEP + sfqf1, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN21-" + spst0 + SEP + sfqf1, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN22-" + spst0 + SEP + spst0rc, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN23-" + spst0 + SEP + spst0lc, sAct, 1.0, bAdd, vocab);
+		
+		addFeature(v, "EN24-" + sfst0 + SEP + spst0 + SEP + spst0rc, sAct, 1.0, bAdd, vocab);
+		addFeature(v, "EN25-" + sfst0 + SEP + spst0 + SEP + spst0lc, sAct, 1.0, bAdd, vocab);
 	}
 	
 	
