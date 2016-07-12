@@ -293,6 +293,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		
 		if (vd != null && (act.isPosAction() || act.isShiftPosAction()))
 		{
+			//System.err.println("adding the delayed features");
 			evaluateDelayedFeatures(v, vd, curidx + 1, spqf1, bAdd);
 			assert (curidx + 1 < szSent || vd.size() == 0);
 		}
@@ -303,9 +304,9 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		
 		if (m_params.m_bUseTagFeature && act.isShiftPosAction())
 		{
-			SRParserCtbHandlerZC08.setTagFeaturesZC08(v, m_vocab, m_dict, bAdd, sAct, sfqp1, sfqf1, sfqf2, spqp1, spqp2);
-			if (m_params.m_bUseSyntax)
-				SRParserCtbHandlerHS10.setTagSyntacticFeatures(v, m_vocab, bAdd, sAct, sfst0, sfqf1, spst0, spst1, spst0lc);
+			//SRParserCtbHandlerZC08.setTagFeaturesZC08(v, m_vocab, m_dict, bAdd, sAct, sfqp1, sfqf1, sfqf2, spqp1, spqp2);
+//			if (m_params.m_bUseSyntax)
+//				SRParserCtbHandlerHS10.setTagSyntacticFeatures(v, m_vocab, bAdd, sAct, sfst0, sfqf1, spst0, spst1, spst0lc);
 		}
 		
 		//use the spqp to construct the entity features
