@@ -177,9 +177,15 @@ public class SRParserTransitionStd extends SRParserTransition
 //						String[] tagArr = m_dict.getTagCandidates(s.sent.get(s.curidx).form);
 //						if(tagArr==null) tagArr = m_dict.getTagList();
 						
+						//define some rules here:
+						String prevEntity = s.curidx>0 ? s.pos[s.curidx-1]: "O";		
 						String[] tagArr = m_dict.getTagList();
-						for (String spqf1 : tagArr)
+						for (String spqf1 : tagArr){
+							if(prevEntity.equals("O") && spqf1.startsWith("I-")) continue;
+							if(prevEntity.equals("B-") && spqf1.startsWith("I-") && !prevEntity.substring(2).equals(spqf1.substring(2)) ) continue;
+							if(prevEntity.equals("I-") && spqf1.startsWith("I-") && !prevEntity.substring(2).equals(spqf1.substring(2)) ) continue;
 							l.add(PDAction.getShiftPosAction(spqf1));
+						}
 					}
 				}
 				else
