@@ -277,8 +277,8 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		String sfqf2 = s0.curidx < s0.sent.size() - 1 ? s0.sent.get(s0.curidx + 1).form : OOR;
 		String sAct = act.toString();
 
-		if (act.isShiftPosAction()) spqf1 = act.getPos();
-		else if (act.isPosAction()) throw new UnsupportedOperationException();
+//		if (act.isShiftPosAction()) spqf1 = act.getPos();
+//		else if (act.isPosAction()) throw new UnsupportedOperationException();
 		
 		/*
 		 *  parsing features
@@ -294,7 +294,7 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		if (vd != null && (act.isPosAction() || act.isShiftPosAction()))
 		{
 			//System.err.println("adding the delayed features");
-			evaluateDelayedFeatures(v, vd, curidx + 1, spqf1, bAdd);
+			//evaluateDelayedFeatures(v, vd, curidx + 1, spqf1, bAdd);
 			assert (curidx + 1 < szSent || vd.size() == 0);
 		}
 		
@@ -310,8 +310,11 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 		}
 		
 		//use the spqp to construct the entity features
-		if(act.isShiftPosAction())
+		if(act.isShiftPosAction()){
+//			System.err.println(s0.toString());
+//			System.err.println(act.toString());
 			setEntityFeatures(v, m_vocab, bAdd, sAct, sfqf1, spqf1, sfqp1, spqp1, sfqf2, spqf2, prevEntity);
+		}
 		
 		return v;
 	}
@@ -464,7 +467,6 @@ public class SRParserCtbHandlerHS10 extends SRParserHandler
 			String sfqf1, String spqf1, String sfqp1, String spqp1, String sfqf2, String spqf2, String prevEntity){
 		addFeature(v, "EN01-" + sfqf1, sAct, 1.0, bAdd, vocab);
 		addFeature(v, "EN02-" + spqf1, sAct, 1.0, bAdd, vocab);
-		
 		addFeature(v, "EN03-" + sfqp1, sAct, 1.0, bAdd, vocab);
 		addFeature(v, "EN04-" + spqp1, sAct, 1.0, bAdd, vocab);
 		addFeature(v, "EN05-" + sfqf2, sAct, 1.0, bAdd, vocab);

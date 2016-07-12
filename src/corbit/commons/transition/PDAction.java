@@ -133,12 +133,12 @@ public class PDAction
 
 	public boolean isPosAction()
 	{
-		return m_action.startsWith("R-");
+		return m_action.startsWith("R--");
 	}
 
 	public boolean isShiftPosAction()
 	{
-		return m_action.startsWith("RS-");
+		return m_action.startsWith("RS--");
 	}
 
 	public String getPos()
